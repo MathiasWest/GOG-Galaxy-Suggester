@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import { purple, teal } from '@material-ui/core/colors';
 import Paper from '@material-ui/core/Paper';
-import { QueryExecResult }  from 'sql.js';
+import { QueryExecResult } from 'sql.js';
 
 import Background from './components/Background/Background';
 import Error from './components/Error/Error';
@@ -133,7 +133,7 @@ function App() {
   const renderPageWhenNoGame = () => {
     switch (currentPage) {
       case navigationPage.openFile: return <FileUpload onFileChange={handleFileChange}></FileUpload>;
-      case navigationPage.preferences: return <Preferences preferences={preferences} onPreferencesChanged={handlePreferencesChanged}></Preferences>;
+      case navigationPage.preferences: return <Preferences preferences={preferences} allGames={allGames || []} onPreferencesChanged={handlePreferencesChanged}></Preferences>;
       case navigationPage.gameDetails: return <GameNotFound />;
       default: return <GameNotFound />;
     }
