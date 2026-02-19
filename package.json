@@ -1,7 +1,7 @@
 {
   "homepage": "http://sparrowbrain.github.io/GOG-Galaxy-Suggester",
   "name": "gog-galaxy-suggester",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "dependencies": {
     "@material-ui/core": "4.12.4",
