@@ -151,4 +151,87 @@ describe('applyFilters', () => {
 
         expect(actualGames).toHaveLength(1);
     });
+
+    // Tag filter tests
+
+    it('should return all games when no genres are selected (empty selection)', () => {
+        games = [
+            { ...testGame, genres: ['RPG'] },
+            { ...testGame, genres: ['Strategy'] },
+        ];
+        filter.selectedGenres = [];
+
+        const actualGames = applyFilters(games, filter);
+
+        expect(actualGames).toHaveLength(2);
+    });
+
+    it('should filter games by selected genre', () => {
+        games = [
+            { ...testGame, genres: ['RPG', 'Action'] },
+            { ...testGame, genres: ['Strategy'] },
+            { ...testGame, genres: ['Puzzle'] },
+        ];
+        filter.selectedGenres = ['RPG'];
+
+        const actualGames = applyFilters(games, filter);
+
+        expect(actualGames).toHaveLength(1);
+        expect(actualGames[0].genres).toContain('RPG');
+    });
+
+    it('should filter games with OR logic within a genre category', () => {
+        games = [
+            { ...testGame, genres: ['RPG'] },
+            { ...testGame, genres: ['Strategy'] },
+            { ...testGame, genres: ['Puzzle'] },
+        ];
+        filter.selectedGenres = ['RPG', 'Strategy'];
+
+        const actualGames = applyFilters(games, filter);
+
+        expect(actualGames).toHaveLength(2);
+    });
+
+    it('should filter games with AND logic between genre and theme categories', () => {
+        games = [
+            { ...testGame, genres: ['RPG'], themes: ['Fantasy'] },
+            { ...testGame, genres: ['RPG'], themes: ['Sci-Fi'] },
+            { ...testGame, genres: ['Strategy'], themes: ['Fantasy'] },
+        ];
+        filter.selectedGenres = ['RPG'];
+        filter.selectedThemes = ['Fantasy'];
+
+        const actualGames = applyFilters(games, filter);
+
+        expect(actualGames).toHaveLength(1);
+        expect(actualGames[0].genres).toContain('RPG');
+        expect(actualGames[0].themes).toContain('Fantasy');
+    });
+
+    it('should filter games by selected developer', () => {
+        games = [
+            { ...testGame, developers: ['BioWare'] },
+            { ...testGame, developers: ['CD Projekt Red'] },
+        ];
+        filter.selectedDevelopers = ['BioWare'];
+
+        const actualGames = applyFilters(games, filter);
+
+        expect(actualGames).toHaveLength(1);
+        expect(actualGames[0].developers).toContain('BioWare');
+    });
+
+    it('should filter games by selected publisher', () => {
+        games = [
+            { ...testGame, publishers: ['EA'] },
+            { ...testGame, publishers: ['Valve'] },
+        ];
+        filter.selectedPublishers = ['Valve'];
+
+        const actualGames = applyFilters(games, filter);
+
+        expect(actualGames).toHaveLength(1);
+        expect(actualGames[0].publishers).toContain('Valve');
+    });
 });

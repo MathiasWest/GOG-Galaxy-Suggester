@@ -1,3 +1,4 @@
+import React, { useMemo } from 'react';
 import { Container, Checkbox, Grid, Typography } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import { preferencesProps } from './Preferences.types';
@@ -9,14 +10,19 @@ import { minYear, maxYear, maxGameMinutes } from '../../types/preferences';
 import { minutesToHumanTime } from '../../utils/humanTime';
 import { Divider } from '@material-ui/core';
 import Bias from './components/Bias';
+import TagFilter from '../TagFilter/TagFilter';
+import extractTags from '../../utils/extractTags';
 
 
 const Preferences = ({
     preferences,
+    allGames,
     onPreferencesChanged,
 }: preferencesProps) => {
 
     const classes = useStyles();
+
+    const availableTags = useMemo(() => extractTags(allGames || []), [allGames]);
 
     const handleChange = (event: { target: any; }) => {
         const target = event.target;
@@ -38,12 +44,20 @@ const Preferences = ({
         onPreferencesChanged(newPreferences);
     };
 
+    const handleTagChange = (name: string, selected: string[]) => {
+        const newPreferences = { ...preferences };
+        const newFilters: any = { ...preferences.filters };
+        newFilters[name] = selected;
+        newPreferences.filters = newFilters;
+        onPreferencesChanged(newPreferences);
+    };
+
     const releaseYearValueLabelFormat = (value: number) => {
         if (value === minYear) {
-            return `≤${value}`;
+            return `\u2264${value}`;
         }
         if (value === maxYear) {
-            return `≥${value}`;
+            return `\u2265${value}`;
         }
         return value.toString();
     }
@@ -51,7 +65,7 @@ const Preferences = ({
     const gameMinutesValueLabelFormat = (value: number) => {
         const humanTime = minutesToHumanTime(value);
         if (value === maxGameMinutes) {
-            return `≥${humanTime}`;
+            return `\u2265${humanTime}`;
         }
         return humanTime;
     }
@@ -144,7 +158,7 @@ const Preferences = ({
                             max: maxGameMinutes,
                         }}
                         InputProps={{
-                            startAdornment: preferences.filters.gameMinutes[1] === maxGameMinutes ? <InputAdornment position="start">≥</InputAdornment> : <></>,
+                            startAdornment: preferences.filters.gameMinutes[1] === maxGameMinutes ? <InputAdornment position="start">\u2265</InputAdornment> : <></>,
                         }}
                         data-testid="maxMinutes"
                     />
@@ -223,6 +237,44 @@ const Preferences = ({
                         aria-labelledby="release-year-range"
                         data-testid="releaseYearRange"
                         data-name="releaseYear"
+                    />
+                </Grid>
+                <Grid item xs={12} >
+                    <Divider></Divider>
+                </Grid>
+                <Grid item xs={12} className={classes.header}>
+                    <Typography variant='h5'>Tags</Typography>
+                </Grid>
+                <Grid item xs={12} lg={6}>
+                    <TagFilter
+                        label="Genres"
+                        availableTags={availableTags.genres}
+                        selectedTags={preferences.filters.selectedGenres}
+                        onChange={(selected) => handleTagChange('selectedGenres', selected)}
+                    />
+                </Grid>
+                <Grid item xs={12} lg={6}>
+                    <TagFilter
+                        label="Themes"
+                        availableTags={availableTags.themes}
+                        selectedTags={preferences.filters.selectedThemes}
+                        onChange={(selected) => handleTagChange('selectedThemes', selected)}
+                    />
+                </Grid>
+                <Grid item xs={12} lg={6}>
+                    <TagFilter
+                        label="Developers"
+                        availableTags={availableTags.developers}
+                        selectedTags={preferences.filters.selectedDevelopers}
+                        onChange={(selected) => handleTagChange('selectedDevelopers', selected)}
+                    />
+                </Grid>
+                <Grid item xs={12} lg={6}>
+                    <TagFilter
+                        label="Publishers"
+                        availableTags={availableTags.publishers}
+                        selectedTags={preferences.filters.selectedPublishers}
+                        onChange={(selected) => handleTagChange('selectedPublishers', selected)}
                     />
                 </Grid>
                 <Grid item xs={12} >

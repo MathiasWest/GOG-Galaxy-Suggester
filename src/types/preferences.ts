@@ -13,6 +13,10 @@ export interface filters {
     withoutReleaseDate: boolean;
     withReleaseDate: boolean;
     releaseYear: number[];
+    selectedGenres: string[];
+    selectedThemes: string[];
+    selectedDevelopers: string[];
+    selectedPublishers: string[];
 }
 
 export interface biases {
@@ -43,6 +47,10 @@ export const allowAllFilter: filters = {
     withoutReleaseDate: true,
     withReleaseDate: true,
     releaseYear: [minYear, maxYear],
+    selectedGenres: [],
+    selectedThemes: [],
+    selectedDevelopers: [],
+    selectedPublishers: [],
 };
 
 export const ignoreAllBias: biases = {
