@@ -54,10 +54,10 @@ const Preferences = ({
 
     const releaseYearValueLabelFormat = (value: number) => {
         if (value === minYear) {
-            return `\u2264${value}`;
+            return `≤${value}`;
         }
         if (value === maxYear) {
-            return `\u2265${value}`;
+            return `≥${value}`;
         }
         return value.toString();
     }
@@ -65,7 +65,7 @@ const Preferences = ({
     const gameMinutesValueLabelFormat = (value: number) => {
         const humanTime = minutesToHumanTime(value);
         if (value === maxGameMinutes) {
-            return `\u2265${humanTime}`;
+            return `≥${humanTime}`;
         }
         return humanTime;
     }
@@ -158,7 +158,7 @@ const Preferences = ({
                             max: maxGameMinutes,
                         }}
                         InputProps={{
-                            startAdornment: preferences.filters.gameMinutes[1] === maxGameMinutes ? <InputAdornment position="start">\u2265</InputAdornment> : <></>,
+                            startAdornment: preferences.filters.gameMinutes[1] === maxGameMinutes ? <InputAdornment position="start">≥</InputAdornment> : <></>,
                         }}
                         data-testid="maxMinutes"
                     />
