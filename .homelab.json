@@ -1,0 +1,7 @@
+{
+  "schema": 1,
+  "status": "retired",
+  "hosts": [],
+  "hub": "MathiasWest/homelab",
+  "note": "Fork of SparrowBrain/GOG-Galaxy-Suggester; the owner's changes are on master."
+}
